@@ -22,6 +22,12 @@ uncooked_gps-*.tar
 # Temporary files, for example, from tests.
 /tmp/
 
+# Output binary
 /uncooked_gps
+
+# Tooling
 /.vscode
 /.elixir_ls
+
+# Local output, not to be committed
+/LightRailRawGPS.json
