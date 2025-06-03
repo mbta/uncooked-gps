@@ -1,14 +1,26 @@
-defmodule UncookedGps do
+defmodule UncookedGps.Fetcher do
   alias ExAws.S3
 
-  def main(_args) do
+  require Logger
+  use GenServer
+
+  def start_link(_) do
+    GenServer.start_link(__MODULE__, nil)
+  end
+
+  def init(_state) do
+    schedule()
+    {:ok, nil}
+  end
+
+  def handle_info(:poll, _state) do
     url = Application.fetch_env!(:uncooked_gps, :ocs_url)
     team_email = Application.fetch_env!(:uncooked_gps, :team_email)
     s3_bucket = Application.get_env(:uncooked_gps, :s3_bucket)
     s3_path = Application.get_env(:uncooked_gps, :s3_path)
 
     user_agent = "UncookedGps/0.1.0 (#{team_email})"
-    IO.puts("[#{user_agent}] Fetching #{url}")
+    Logger.info("fetch url=#{url} agent=#{user_agent}")
     resp = Req.get!(url, user_agent: user_agent)
 
     vehicles =
@@ -43,12 +55,20 @@ defmodule UncookedGps do
     data = JSON.encode_to_iodata!(vehicles)
 
     if s3_bucket != nil do
-      IO.puts("Writing to s3://#{s3_bucket}/#{s3_path}...")
+      Logger.info("write path=s3://#{s3_bucket}/#{s3_path}")
       S3.put_object(s3_bucket, s3_path, data)
     else
       path = "LightRailRawGPS.json"
-      IO.puts("Writing to file://#{path}...")
+      Logger.info("write path=file://#{path}")
       File.write!(path, data)
     end
+
+    schedule()
+    {:noreply, nil}
+  end
+
+  defp schedule() do
+    # hourly
+    Process.send_after(self(), :poll, 60 * 60 * 1000)
   end
 end
