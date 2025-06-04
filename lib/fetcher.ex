@@ -5,7 +5,10 @@ defmodule UncookedGps.Fetcher do
   require Logger
   use GenServer
 
+  @wait_ms 60 * 60 * 1000
+
   def start_link(_) do
+    Logger.info("Starting fetcher delay_ms=#{@wait_ms}")
     GenServer.start_link(__MODULE__, nil)
   end
 
@@ -67,6 +70,6 @@ defmodule UncookedGps.Fetcher do
 
   defp schedule() do
     # hourly
-    Process.send_after(self(), :poll, 60 * 60 * 1000)
+    Process.send_after(self(), :poll, @wait_ms)
   end
 end

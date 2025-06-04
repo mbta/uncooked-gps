@@ -18,4 +18,6 @@ RUN mix release --path /app-release
 FROM hexpm/elixir:1.18.2-erlang-26.2.5.9-alpine-3.19.7 as runtime
 
 COPY --from=elixir /app-release .
+
+HEALTHCHECK CMD ["bin/uncooked_gps", "rpc", "UncookedGps.Health.healthy?()"]
 CMD ["bin/uncooked_gps", "start"]
