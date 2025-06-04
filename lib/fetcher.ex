@@ -1,4 +1,5 @@
 defmodule UncookedGps.Fetcher do
+  alias UncookedGps.Http
   alias ExAws.S3
 
   require Logger
@@ -14,14 +15,11 @@ defmodule UncookedGps.Fetcher do
   end
 
   def handle_info(:poll, _state) do
-    url = Application.fetch_env!(:uncooked_gps, :ocs_url)
-    team_email = Application.fetch_env!(:uncooked_gps, :team_email)
+    ocs_url = Application.fetch_env!(:uncooked_gps, :ocs_url)
     s3_bucket = Application.get_env(:uncooked_gps, :s3_bucket)
     s3_path = Application.get_env(:uncooked_gps, :s3_path)
 
-    user_agent = "UncookedGps/0.1.0 (#{team_email})"
-    Logger.info("fetch url=#{url} agent=#{user_agent}")
-    resp = Req.get!(url, user_agent: user_agent)
+    resp = Http.get(ocs_url)
 
     vehicles =
       resp.body
