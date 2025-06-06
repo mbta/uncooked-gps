@@ -24,6 +24,7 @@ defmodule UncookedGps.MixProject do
     [
       {:req, "~> 0.5.10"},
       {:tz, "~> 0.28.1"},
+      {:mock, "~> 0.3.0", only: :test},
       {:ex_aws, "~> 2.5"},
       {:ex_aws_s3, "~> 2.5"}
     ]
