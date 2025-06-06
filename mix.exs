@@ -22,6 +22,7 @@ defmodule UncookedGps.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
+      {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
       {:req, "~> 0.5.10"},
       {:tz, "~> 0.28.1"},
       {:mock, "~> 0.3.0", only: :test},
