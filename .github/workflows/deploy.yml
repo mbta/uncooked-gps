@@ -28,7 +28,7 @@ jobs:
       - uses: mbta/actions/deploy-scheduled-ecs@v2
         with:
           role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
-          ecs-cluster: linux-staging
+          ecs-cluster: linux-${{ inputs.environment == 'prod' && 'prod' || 'staging' }}
           ecs-service: uncooked-gps-${{ inputs.environment || 'dev' }}
           ecs-task-definition: uncooked-gps-${{ inputs.environment || 'dev' }}
           docker-tag: ${{ steps.build-push.outputs.docker-tag }}
