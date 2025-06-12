@@ -64,15 +64,16 @@ defmodule UncookedGps.Fetcher do
   def upload(vehicles) do
     s3_bucket = Application.get_env(:uncooked_gps, :s3_bucket)
     s3_path = Application.get_env(:uncooked_gps, :s3_path)
-    data = JSON.encode_to_iodata!(vehicles)
+    data = JSON.encode!(vehicles)
 
     if s3_bucket != nil do
+      request = S3.put_object(s3_bucket, s3_path, data)
+      ExAws.request(request)
       Logger.info("write path=s3://#{s3_bucket}/#{s3_path}")
-      S3.put_object(s3_bucket, s3_path, data)
     else
       path = "LightRailRawGPS.json"
-      Logger.info("write path=file://#{path}")
       File.write!(path, data)
+      Logger.info("write path=file://#{path}")
     end
   end
 
