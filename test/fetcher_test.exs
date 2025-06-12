@@ -28,16 +28,16 @@ defmodule UncookedGps.FetcherTest do
                  speed: nil,
                  bearing: nil,
                  car: "3606",
-                 latitude: "42.343370686319204",
-                 longitude: "-71.1168515041386",
+                 latitude: 42.343370686319204,
+                 longitude: -71.1168515041386,
                  updated_at: "2025-06-05T19:29:24-04:00"
                },
                "UNKNOWN-3608" => %{
                  speed: nil,
                  bearing: nil,
                  car: "3608",
-                 latitude: "42.393847580937326",
-                 longitude: "-71.1064506423318",
+                 latitude: 42.393847580937326,
+                 longitude: -71.1064506423318,
                  updated_at: "2025-06-05T16:24:41-04:00"
                }
              } == Fetcher.fetch()

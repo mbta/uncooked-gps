@@ -39,13 +39,16 @@ defmodule UncookedGps.Fetcher do
         [_, "", ""] ->
           {nil, nil}
 
-        [car, latitude, longitude, timestamp_local] ->
+        [car, latitude_str, longitude_str, timestamp_local] ->
           {:ok, timestamp_naive} =
             timestamp_local
             |> NaiveDateTime.from_iso8601()
 
           timestamp =
             timestamp_naive |> DateTime.from_naive!("America/New_York") |> DateTime.to_iso8601()
+
+          {latitude, _} = Float.parse(latitude_str)
+          {longitude, _} = Float.parse(longitude_str)
 
           {"UNKNOWN-#{car}",
            %{
