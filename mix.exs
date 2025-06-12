@@ -22,6 +22,8 @@ defmodule UncookedGps.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
+      # used by ex_aws to parse AWS CLI settings/credentials
+      {:configparser_ex, "== 4.0.0", only: :dev},
       {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
       {:dialyxir, "~> 1.4", only: [:dev, :test], runtime: false},
       {:req, "~> 0.5.10"},
