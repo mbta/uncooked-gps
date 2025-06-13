@@ -5,11 +5,14 @@ defmodule UncookedGps.Fetcher do
   require Logger
   use GenServer
 
-  @wait_ms 60 * 60 * 1000
+  @spec get_wait_ms() :: integer()
+  def get_wait_ms() do
+    String.to_integer(Application.fetch_env!(:uncooked_gps, :poll_delay_ms))
+  end
 
   @spec start_link(any()) :: :ignore | {:error, any()} | {:ok, pid()}
   def start_link(_) do
-    Logger.info("Starting fetcher delay_ms=#{@wait_ms}")
+    Logger.info("Starting fetcher poll_delay_ms=#{get_wait_ms()}")
     GenServer.start_link(__MODULE__, nil)
   end
 
@@ -81,7 +84,6 @@ defmodule UncookedGps.Fetcher do
   end
 
   defp schedule() do
-    # hourly
-    Process.send_after(self(), :poll, @wait_ms)
+    Process.send_after(self(), :poll, get_wait_ms())
   end
 end
