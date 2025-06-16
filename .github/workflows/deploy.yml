@@ -21,7 +21,6 @@ jobs:
       id-token: write
       contents: read
     environment: ${{ inputs.environment || 'dev' }}
-    concurrency: ${{ inputs.environment || 'dev' }}
     steps:
       - uses: actions/checkout@v4
       - uses: mbta/actions/build-push-ecr@v2
