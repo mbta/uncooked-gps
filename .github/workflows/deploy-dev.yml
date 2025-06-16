@@ -1,0 +1,23 @@
+name: Deploy to Dev
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        type: environment
+        required: true
+        default: dev
+  push:
+    branches: ["main"]
+
+concurrency:
+  group: dev
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    name: Deploy to Dev
+    uses: ./.github/workflows/deploy.yml
+    with:
+      environment: dev
+    secrets: inherit
