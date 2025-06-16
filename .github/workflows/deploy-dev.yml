@@ -2,11 +2,6 @@ name: Deploy to Dev
 
 on:
   workflow_dispatch:
-    inputs:
-      environment:
-        type: environment
-        required: true
-        default: dev
   push:
     branches: ["main"]
 
