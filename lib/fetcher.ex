@@ -23,7 +23,11 @@ defmodule UncookedGps.Fetcher do
   end
 
   def handle_info(:poll, _state) do
-    upload(fetch())
+    if Application.fetch_env!(:uncooked_gps, :fetch_enabled) do
+      upload(fetch())
+    else
+      Logger.info("Skipping fetch; FETCH_ENABLED is not true")
+    end
 
     schedule()
     {:noreply, nil}
