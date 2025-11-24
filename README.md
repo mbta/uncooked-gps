@@ -1,4 +1,4 @@
-# UncookedGps
+# UncookedGPS
 
 uncooked_gps retrieves GL raw GPS data from OCS and uploads it to S3.
 
