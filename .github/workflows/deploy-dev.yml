@@ -9,10 +9,18 @@ concurrency:
   group: dev
   cancel-in-progress: true
 
+permissions: {}
+
 jobs:
   deploy:
     name: Deploy to Dev
+    permissions:
+      id-token: write # allows workflow to exchange short-lived tokens directly from cloud provider
+      contents: read
     uses: ./.github/workflows/deploy.yml
     with:
       environment: dev
-    secrets: inherit
+    secrets:
+      AWS_ROLE_ARN: ${{ secrets.AWS_ROLE_ARN }}
+      DOCKER_REPO: ${{ secrets.DOCKER_REPO }}
+      SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}

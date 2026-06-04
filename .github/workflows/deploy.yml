@@ -14,21 +14,26 @@ on:
       SLACK_WEBHOOK:
         required: true
 
+permissions: {}
+
 jobs:
   deploy:
+    name: Deploy to ${{ inputs.environment }}
     runs-on: ubuntu-latest
     permissions:
-      id-token: write
+      id-token: write # allows workflow to exchange short-lived tokens directly from cloud provider
       contents: read
     environment: ${{ inputs.environment || 'dev' }}
     steps:
-      - uses: actions/checkout@v4
-      - uses: mbta/actions/build-push-ecr@v2
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+        with:
+          persist-credentials: false
+      - uses: mbta/actions/build-push-ecr@6cff1d5eef7e0d780190353278bc84fdf6177dab # v2.18
         id: build-push
         with:
           role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
           docker-repo: ${{ secrets.DOCKER_REPO }}
-      - uses: mbta/actions/deploy-ecs@v2
+      - uses: mbta/actions/deploy-ecs@6cff1d5eef7e0d780190353278bc84fdf6177dab # v2.18
         with:
           role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
           ecs-cluster: linux-${{ inputs.environment == 'prod' && 'prod' || 'staging' }}
@@ -36,7 +41,7 @@ jobs:
           ecs-task-definition: uncooked-gps-${{ inputs.environment || 'dev' }}
           docker-tag: ${{ steps.build-push.outputs.docker-tag }}
           launch-type: EXTERNAL
-      - uses: mbta/actions/notify-slack-deploy@v2
+      - uses: mbta/actions/notify-slack-deploy@6cff1d5eef7e0d780190353278bc84fdf6177dab #v2.18
         if: ${{ !cancelled() }}
         with:
           webhook-url: ${{ secrets.SLACK_WEBHOOK }}
