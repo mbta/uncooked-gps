@@ -23,14 +23,14 @@ defmodule UncookedGps.MixProject do
   defp deps do
     [
       # used by ex_aws to parse AWS CLI settings/credentials
-      {:configparser_ex, "== 4.0.0", only: :dev},
-      {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
-      {:dialyxir, "~> 1.4", only: [:dev, :test], runtime: false},
-      {:req, "~> 0.5.10"},
-      {:tz, "~> 0.28.1"},
-      {:mock, "~> 0.3.0", only: :test},
-      {:ex_aws, "~> 2.5"},
-      {:ex_aws_s3, "~> 2.5"}
+      {:configparser_ex, "5.0.1", only: :dev},
+      {:credo, "1.7.19", only: [:dev, :test], runtime: false},
+      {:dialyxir, "1.4.8", only: [:dev, :test], runtime: false},
+      {:req, "0.7.4"},
+      {:tz, "0.28.4"},
+      {:mock, "0.3.9", only: :test},
+      {:ex_aws, "2.7.0"},
+      {:ex_aws_s3, "2.5.9"}
     ]
   end
 end
